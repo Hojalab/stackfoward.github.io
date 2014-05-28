@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Stackfoward.github.io by JamiiTech</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Stackfoward.github.io</h1>
+        <h2>stackfoward startup profile</h2>
+        <a href="https://github.com/JamiiTech/stackfoward.github.io" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h3>
+<a name="welcome-to-stackfoward-company-profile" class="anchor" href="#welcome-to-stackfoward-company-profile"><span class="octicon octicon-link"></span></a>Welcome to Stackfoward Company ``Profile.</h3>
+
+<p>Here for you and your projects Were currentry using
+HMVC: an Introduction and Application
+by Barry Cogan18 May 2010166 Comments</p>
+
+<p>This tutorial is an introduction to the Hierarchical Model View Controller(HMVC) pattern, and how it applies to web application development. For this tutorial, I will use examples provided from the CodeIgniter from Scratch series and demonstrate how HMVC can be a valuable modification to your development process. This introduction assumes you have an understanding of the Model View Controller (MVC) pattern. We suggest you read our introduction to MVC to get acquainted with the topic before tackling this tutorial.</p>
+
+<p>What is HMVC?</p>
+
+<p>HMVC is an evolution of the MVC pattern used for most web applications today. It came about as an answer to the salability problems apparent within applications which used MVC. The solution presented in the JavaWorld web site, July 2000, proposed that the standard Model, View, and Controller triad become layered into a "hierarchy of parent-child MCV layers". The image below illustrates how this works:</p>
+
+<p>Each triad functions independently from one another. A triad can request access to another triad via their controllers. Both of these points allow the application to be distributed over multiple locations, if needed. In addition, the layering of MVC triads allows for a more in depth and robust application development. This leads to several advantages which brings us to our next point.
+Why should I use HMVC?</p>
+
+<p>Key advantages to implementing the HMVC pattern in your development cycle:</p>
+
+<pre><code>Modularization: Reduction of dependencies between the disparate parts of the application.
+Organization: Having a folder for each of the relevant triads makes for a lighter work load.
+Reusability: By nature of the design it is easy to reuse nearly every piece of code.
+Extendibility: Makes the application more extensible without sacrificing ease of maintenance.
+</code></pre>
+
+<p>These advantages will allow you to get M.O.R.E out of your application with less headaches.
+Setting up HMVC in CodeIgniter</p>
+
+<p>To add extra depth to the CodeIgniter from Scratch series, we will be viewing today's examples in CodeIgniter. I will lead us though the steps needed to get CodeIgniter working with HMVC. Once we're done with that, I'll provide a couple of examples. Let's begin!
+Preface</p>
+
+<p>To run web applications, you need a web server on your computer if you are not working remotely. Here are recommendations with links to installation instructions:</p>
+
+<pre><code>Windows: XAMPP 1.7.3 – Installation Instructions
+Mac: Turn on your "Personal Web Sharing" – Installation Instructions
+</code></pre>
+
+<p>Step 1. Download and Install CodeIgniter</p>
+
+<p>Go to codeigniter.com and click the "Download CodeIgniter" link. If you know how to install it and want to skip past this step click here</p>
+
+<p>Extract the contents of the zip file to your web server's document root.</p>
+
+<p>Rename the "CodeIgniter_1.7.2" folder to "hmvcExample".</p>
+
+<p>Move the "hmvcExample/system/application" folder to "hmvcExample/application". This is common practice with CodeIgniter. The purpose of doing this is to separate the application from the core of the framework. We should now have a directory that looks like the image below:</p>
+
+<p>Open "hmvcExample/application/config/config.php" in your editor of choice.</p>
+
+<p>Edit the site base url to match the location of your install. In my case I would change
+1</p>
+
+<p>$config['base_url'] = "<a href="http://example.com/">http://example.com/</a>";</p>
+
+<p>into
+1</p>
+
+<p>$config['base_url'] = "http://localhost/hmvcExample/";</p>
+
+<p>Save your changes and close "hmvcExample/application/config/config.php"</p>
+
+<p>Test that we have a working version of CodeIgniter. Open your browser and check your "http://yourhost/hmvcExample/".
+You should be greeted with the "Welcome to CodeIgniter" screen below:</p>
+
+<p>That's it! You have successfully downloaded and installed CodeIgniter. Now we will move on to making it work with the HMVC extension.
+Step 2. Download and Install HMVC Extension</p>
+
+<p>Download version 5.2 of the modular extension from the CodeIgniter Wiki.</p>
+
+<p>In the contents of the zip file are three php files:</p>
+
+<p>Move these three files into the "hmvcExample/application/libraries/" folder.</p>
+
+<p>Recheck your browser. You should still see the Welcome to CodeIgniter screen.</p>
+
+<p>It's time to add the modules. Create the following directory structure "application/modules/welcome/controllers/".</p>
+
+<p>Move the "application/controllers/welcome.php" to "application/modules/welcome/controllers/welcome.php".</p>
+
+<p>Recheck your browser. You should still see the Welcome to CodeIgniter screen.</p>
+
+<p>Create the folder "application/modules/welcome/views/"</p>
+
+<p>Move the "application/views/welcome_message.php" to "application/modules/welcome/views/welcome_message.php".</p>
+
+<p>Do a final check on your browser. You should still see the Welcome to CodeIgniter screen.</p>
+
+<p>That's it! Modular Extensions is installed correctly.
+Login Module Example</p>
+
+<p>Now that we have our HMVC enabled instance of CodeIgniter, I will demonstrate some short examples. For our first example I will show how you can apply user access restrictions to pages or entire modules.</p>
+
+<p>Download and unzip CodeIgniter from Scratch Day 6 source files into your web server. You should end up with a folder called "ci_day6/" alongside our "hmvcExample/"</p>
+
+<p>Create the "login" module in our "hmvcExample/application" directory. It should end up looking like this
+1
+2
+3</p>
+
+<p>hmvcExample/application/modules/login/controllers/
+hmvcExample/application/modules/login/models/
+hmvcExample/application/modules/login/views/</p>
+
+<p>Create the "site" module in our "hmvcExample/application" directory. It should end up looking like this
+1
+2
+3</p>
+
+<p>hmvcExample/application/modules/site/controllers/
+hmvcExample/application/modules/site/models/
+hmvcExample/application/modules/site/views/</p>
+
+<p>TIP: When working with modules I keep a folder named RENAME with the three empty folders controllers, models and views. This saves me a little bit of time anytime I wish to create a new model.</p>
+
+<p>Now we copy over the login module files from "ci_day6/" to our "hmvcExample/".
+1
+2
+3
+4
+5</p>
+
+<p>ci_day6/application/controllers/login.php
+ci_day6/application/models/membership_model.php
+ci_day6/application/views/login_form.php
+ci_day6/application/views/signup_form.php
+ci_day6/application/views/signup_successful.php</p>
+
+<p>Copy/Move each of the above files over as listed below
+1
+2
+3
+4
+5</p>
+
+<p>hmvcExample/application/modules/login/controllers/login.php
+hmvcExample/application/modules/login/models/membership_model.php
+hmvcExample/application/modules/login/views/login_form.php
+hmvcExample/application/modules/login/views/signup_form.php
+hmvcExample/application/modules/login/views/signup_successful.php</p>
+
+<p>Next we copy over the site module files from "ci_day6/" to our "hmvcExample/".
+1
+2</p>
+
+<p>ci_day6/application/controllers/site.php
+ci_day6/application/views/logged_in_area.php</p>
+
+<p>Copy/Move each of the above files over as listed below
+1
+2</p>
+
+<p>hmvcExample/application/modules/site/controllers/site.php
+hmvcExample/application/modules/site/views/logged_in_area.php</p>
+
+<p>The last files to copy over are the global views and CSS and image files. The asterisk (*) denotes folder and all its contents including sub folders
+1
+2
+3</p>
+
+<p>ci_day6/css/*
+ci_day6/img/*
+ci_day6/application/views/includes/*</p>
+
+<p>Copy each of the above folders and all their content over as listed below
+1
+2
+3</p>
+
+<p>hmvcExample/css/*
+hmvcExample/img/*
+hmvcExample/application/views/includes/*</p>
+
+<p>Open "hmvcExample/application/config/autoload.php" and edit it to look like the this:
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13</p>
+
+<p>$autoload['libraries'] = array('database', 'session');  // Need to Autoload DB and Session</p>
+
+<p>/*
+| -------------------------------------------------------------------
+|  Auto-load Helper Files
+| -------------------------------------------------------------------
+| Prototype:
+|
+|   $autoload['helper'] = array('url', 'file');
+*/</p>
+
+<p>$autoload['helper'] = array('url', 'form');     // Need to autoload url and form.</p>
+
+<p>If you have not already done so from step one, open "hmvcExample/application/config/config.php" and edit it so that the base url is set to your appropriate location.
+1</p>
+
+<p>$config['base_url'] = "http://localhost/hmvcExample/";  // web address. WARNING keep trailing /</p>
+
+<p>Open "hmvcExample/application/config/database.php" and add the appropriate links to your database.
+1
+2
+3
+4</p>
+
+<p>$db['default']['hostname'] = "localhost";       // location of DB server
+$db['default']['username'] = "YOUR USERNAME HERE";  // username you use to connect
+$db['default']['password'] = "YOUR PASSWORD HERE";  // associated password
+$db['default']['database'] = "ci_series";       // The database you want to use</p>
+
+<p>Open your browser to test that the login page displays "http://localhost/hmvcExample/index.php/login"</p>
+
+<p>Now to make this login function, we need to create the membership database table. For this, we need to create a table in your PHPMyAdmin.</p>
+
+<p>Select or create your "ci_series" database.</p>
+
+<p>In the sQL tab, paste the code below into the textarea and click go
+1
+2
+3
+4
+5
+6
+7
+8</p>
+
+<p>CREATE TABLE  <code>ci_series</code>.<code>membership</code> (
+<code>id</code> INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+<code>first_name</code> VARCHAR( 32 ) NOT NULL ,
+<code>last_name</code> VARCHAR( 32 ) NOT NULL ,
+<code>email_address</code> VARCHAR( 64 ) NOT NULL ,
+<code>username</code> VARCHAR( 32 ) NOT NULL ,
+<code>password</code> VARCHAR( 32 ) NOT NULL
+) ENGINE = MYISAM ;</p>
+
+<p>With the membership table created, we click on the create account link on the login page and add a user to the database.</p>
+
+<p>Login in as the user and confirm that you are now in the "site/members_area" of the site. It should look similar to the image below:</p>
+
+<p>Click "logoff" link and try to manually go back to the members area. you will see that you no longer have permission to do so.</p>
+
+<p>So we have our triads grouped, but we are still not quite in HMVC mode yet. In the site controller we find a function called is_logged_in().
+1
+2
+3
+4
+5
+6
+7
+8
+9</p>
+
+<p>function is_logged_in()
+{
+    $is_logged_in = $this-&gt;session-&gt;userdata('is_logged_in');
+    if(!isset($is_logged_in) || $is_logged_in != true)
+    {
+        echo 'You don\'t have permission to access this page. <a href="../login">Login</a>';<br>
+        die();<br>
+    }<br>
+}</p>
+
+<p>This is a login related function. In MVC mode, this is required because site cannot access login. With HMVC we can fix this.</p>
+
+<p>Cut the is_logged_in() function out of "applications/modules/site/controllers/site.php"</p>
+
+<p>Save site.php without the is_logged_in() function.</p>
+
+<p>Open "applications/modules/login/controllers/login.php".</p>
+
+<p>Paste the is_logged_in() function into the class.</p>
+
+<p>Save login.php</p>
+
+<p>Open "applications/modules/site/controllers/site.php".
+1
+2
+3
+4
+5</p>
+
+<p>function __construct()
+{
+    parent::Controller();
+    $this-&gt;is_logged_in();
+}</p>
+
+<p>In the __Construct() function, we make the HMVC call to login's is_logged_in() function, as seen below:
+1
+2
+3
+4
+5
+6</p>
+
+<p>function __construct()
+{
+    parent::Controller();
+    // Format: modules::run('module/controller/action', $param1, $param2, .., $paramN);
+    modules::run('login/is_logged_in');
+}
+MVC 101 Complete</p>
+
+<p>There you have it! We have successfully altered day six code into HMVC format. The site module now requests the login check instead of having to use its own. While outwardly we observe no difference, the site design has fundamentally been changed. All login functions are now where they belong: inside the login triad. This may seem like a lot of work with small reward but it is not so. Any login changes can be made once. The internal structure of the triad can be edited without having to change the entire application in response. Code replication for other controllers is no longer required. Last but not least, all the related code is in one handy location. This tiny step may not WOW you but when we delve deeper into bigger, complex applications, the M.O.R.E. apparent it will become how effective the HMVC pattern is.
+Members Section Example</p>
+
+<p>We are now going to uncover more of HMVC's power. We just demonstrated how to call a module from a controller. There are other places you can do that as well. HMVC was build with the User Interface (UI) in mind. We get to call modules from our views as a result. This is where the power of HMVC can really shine.</p>
+
+<p>When calling HMVC from a view you will use the same modules::run(). There is only one requirement when doing this. The resulting output from the call must be a html snippet and not a complete view. This is because we are already inside a view at the time we call the run function. We will see this in action down the page as we edit the site module views.
+Step 1. Edit Login Controller</p>
+
+<p>We are going to create a block which appears on the top of every page with our user's name, important links, and logout option. Widgets like this are commonplace on sites today. The image below illustrates the end result.</p>
+
+<p>Open "applications/modules/login/controllers/login.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</p>
+
+<p>function cp()
+{
+    if( $this-&gt;session-&gt;userdata('username') )
+    {
+        // load the model for this controller
+        $this-&gt;load-&gt;model('membership_model');
+        // Get User Details from Database
+        $user = $this-&gt;membership_model-&gt;get_member_details();
+        if( !$user )
+        {
+            // No user found
+            return false;
+        }
+        else
+        {
+            // display our widget
+            $this-&gt;load-&gt;view('user_widget', $user);
+        }<br>
+    }
+    else
+    {
+        // There is no session so we return nothing
+        return false;
+    }
+}</p>
+
+<p>Paste/Write the code above into the login controller.</p>
+
+<p>cp() receives information from the membership_model function, get_member_details(), which we create in the next step. If a user is found we will display the view snippet detailed in step three. From there we should get the desired block illustrated above.</p>
+
+<p>Save the changes you made to login.php
+Step 2. Edit Membership Model</p>
+
+<p>You will notice that we called a get_member_details() from the membership_model. This function gets our user information from the database and will be accessed from a few different sources. We are going to work on that now.</p>
+
+<p>Open "applications/modules/login/models/membership_model.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</p>
+
+<p>function get_member_details($id=false)
+{
+    if( !$id )
+    {
+        // Set Active Record where to the current session's username
+        if( $this-&gt;session-&gt;userdata('username') )
+        {
+            $this-&gt;db-&gt;where('username', $this-&gt;session-&gt;userdata('username'));
+        }
+        else
+        {
+            // Return a non logged in person from accessing member profile dashboard
+            return false;
+        }
+    }
+    else
+    {
+        // get the user by id
+        $this-&gt;db-&gt;where('id', $id);
+    }
+    // Find all records that match this query
+    $query = $this-&gt;db-&gt;get('membership');
+    // In this case because we don't have a check set for unique username
+    // we will return the last user created with selected username.
+    if($query-&gt;num_rows() &gt; 0)
+    {
+        // Get the last row if there are more than one
+        $row = $query-&gt;last_row();
+        // Assign the row to our return array
+        $data['id'] = $row-&gt;id;
+        $data['first_name'] = $row-&gt;first_name;
+        $data['last_name'] = $row-&gt;last_name;
+        // Return the user found
+        return $data;
+    }
+    else
+    {
+        // No results found
+        return false;
+    }</p>
+
+<pre><code>Comment your code! It's a best practice and will help others understand what you wrote.
+</code></pre>
+
+<p>Line 01: The function call has a default variable $id. This allows us an option of finding a user by ID rather than by username. This made optional by setting it to false in the declaration.</p>
+
+<p>The rest of the function is straight forward and well commented. We query the membership table for a user via username or ID. The result is saved to the $data array and returned. All other outcomes return false.</p>
+
+<p>Save the changes you made to membership_model.php
+Step 3. Create User Widget View</p>
+
+<p>The third and final piece to the widget we are creating is the xhtml snippet, which we can put into any other view. This is called by the login controller's cp() function which we just wrote.</p>
+
+<p>Open "applications/modules/login/views/user_widget.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14</p>
+
+<p><code>
+    &lt;?php echo $first_name.' '.$last_name; ?&gt; ·
+    &lt;?php echo anchor('site/members_area', 'Dashboard'); ?&gt; |
+    &lt;?php echo anchor('site/profile/'.$id, 'Profile'); ?&gt; |
+    &lt;?php echo anchor('site/messages/'.$id, 'Messages'); ?&gt; |
+    &lt;?php echo anchor('login/logout', 'Logout'); ?&gt;
+</code></p>
+
+<p>Note: It is not a good practice to use inline styling. I opted to put this one instance of inline style for the sake of remaining on topic.</p>
+
+<p>This styled code block takes the information passed from the cp() function. We generate the links using CodeIgniter's URL helper's anchor() function. More information about the user guide can be found on codeigniter.com.</p>
+
+<p>After working on those three files we will test the "login/cp" page. We should see something like the image below. Note: You need to be logged int to see it. Be sure to do so before checking the page or you will see nothing.
+Step 4. Edit Site Controller</p>
+
+<p>The links in the snippet to profile and messages will return an error for the moment. This is ok because we have not created those functions yet. Lets do that now.</p>
+
+<p>Open "applications/modules/site/controllers/site.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13</p>
+
+<p>&lt;?php
+class Site extends Controller
+{
+    function __construct()
+    {
+        parent::Controller();
+    }</p>
+
+<pre><code>function members_area()
+{
+    modules::run('login/is_logged_in');
+    $this-&gt;load-&gt;view('logged_in_area');
+}
+</code></pre>
+
+<p>__construct()
+For the purpose of this example we shall remove the...
+1</p>
+
+<p>modules::run('login/is_logged_in');</p>
+
+<p>...from the function so that we can make specific parts private and have other parts public.</p>
+
+<p>members_area()
+We want only logged in users to access the members dashboard area. So we will use the modules:run HMVC function and call the is_logged_in check from the login controller. We then load the logged_in_area view file which will be edited further down the page.
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16</p>
+
+<p>function messages()
+{
+    modules::run('login/is_logged_in');
+    $this-&gt;load-&gt;model('login/membership_model');
+    $user = $this-&gt;membership_model-&gt;get_member_details($this-&gt;uri-&gt;segment(3));
+    if( !$user )
+    {
+        // No user found
+        return false;
+    }
+    else
+    {
+        // display our widget
+        $this-&gt;load-&gt;view('member_messages', $user);
+    }<br>
+}</p>
+
+<p>messages()
+Like members_area(), we only want logged in users so we have included the is_logged_in check. We have already written the code on how to get user details from the database so we will load the login model, membership_model. This will allow us to get the user information via the get_member_details() function. The third URI segment being passed into that function is an id for the user we wish to get messages for. For example, if the url was:
+1</p>
+
+<p>http://localhost/hmvcExample/index.php/site/messages/43</p>
+
+<p>Then our function get_member_details() would be receiving "43" as an input variable. Depending on the result of get_member_details(), we are either shown the view: member_messages or we get nothing (as a result of a failed query).
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</p>
+
+<pre><code>function profile()
+{
+    $this-&gt;load-&gt;model('login/membership_model');
+    $user = $this-&gt;membership_model-&gt;get_member_details($this-&gt;uri-&gt;segment(3));
+    if( !$user )
+    {
+        // No user found
+        $data['main_content'] = 'member_profile';
+        $data['notice'] = 'you need to view a profile id';
+        $this-&gt;load-&gt;view('includes/template', $data);
+    }
+    else
+    {
+        // display our widget
+        $user['main_content'] = 'member_profile';
+        $this-&gt;load-&gt;view('includes/template', $user);
+    }      
+}
+</code></pre>
+
+<p>}</p>
+
+<p>profile()
+Just like any social network; we want the profile pages to be public. So we have not included the is_logged_in check. Just like messages, we call the login triad's membership_model and query the database for our desired user. In this case, if no user is found, we quit a bit more gracefully. We also notify the visitor that an id needs to be specified. With a successful result, we see the member's profile.
+Step 5 Edit Logged In Area View</p>
+
+<p>Open "applications/modules/site/views/logged_in_area.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12</p>
+
+<p>&lt;!DOCTYPE html&gt;
+
+</p>
+    untitled
+    &lt;?php echo modules::run('login/cp');?&gt;
+    <h2>
+<a name="welcome-back-php-echo-this-session-userdatausername-" class="anchor" href="#welcome-back-php-echo-this-session-userdatausername-"><span class="octicon octicon-link"></span></a>Welcome Back, &lt;?php echo $this-&gt;session-&gt;userdata('username'); ?&gt;!</h2>
+     <p>This section represents the area that only logged in members can access.</p>
+
+
+
+<p>Overwrite the contents of the file with the code above.</p>
+
+<p>Line 08: HMVC is put into action here. Our view calls the "login/cp" function, and echoes out the html snippet exactly where we tell it. Notice how we didn't have to prepare anything ourselves? It's all handled internally by login for us. Handy isn't it?</p>
+
+<p>Save the changes you made to logged_in_area.php. Your finished page should display like:
+Step 6. Create Member Messages View</p>
+
+<p>Create a new view: "applications/modules/site/views/member_messages.php".
+01
+02
+03
+04
+05
+06
+07
+08
+09
+10
+11
+12</p>
+
+<p>&lt;!DOCTYPE html&gt;
+
+</p>
+    untitled
+    &lt;?php echo modules::run('login/cp');?&gt;
+    <h2>
+<a name="php-echo-first_name-s-messages" class="anchor" href="#php-echo-first_name-s-messages"><span class="octicon octicon-link"></span></a>&lt;?php echo $first_name; ?&gt;'s Messages</h2>
+     <p>This could be where the messaging system gets displayed</p>
+
+
+
+<p>Write or paste the code above into the newly created file.</p>
+
+<p>This view is pretty much just a clone of the members area to test that login holds on multiple pages. There is one difference: we fished some information from the login module's membership_model. This is shown as the $first_name variable.</p>
+
+<p>The point of getting user information here would be to pass it on to a module which would return a snippet with the user's messages.</p>
+
+<p>Save the changes you made to member_messages.php. Your finished page should display like:
+Step 7. Create Member Profile View</p>
+
+<p>Create a new view: "applications/modules/site/views/member_profile.php".
+1
+2
+3
+4
+5
+6
+7
+8</p>
+
+<p>&lt;?php echo modules::run('login/cp');?&gt;
+&lt;?php if( isset($notice) ): ?&gt;</p>
+
+<h2>
+<a name="member-profile-pages" class="anchor" href="#member-profile-pages"><span class="octicon octicon-link"></span></a>Member Profile Pages</h2>
+
+<p><?php echo $notice; ?></p>
+
+<p>&lt;?php else: ?&gt;</p>
+
+<h2>
+<a name="s-profile" class="anchor" href="#s-profile"><span class="octicon octicon-link"></span></a>
+<?php echo $first_name; ?>'s Profile</h2>
+
+<p></p><p>Put all the good wholesome profile info here!</p>
+&lt;?php endif; ?&gt;
+
+<p>Write or paste the code above into the newly created file.</p>
+
+<p>We have an if statement which detects whether a user was found or not. If not, we get brought to an error page stating we need an ID to view a profile.</p>
+
+<p>Again, we retrieve the user information. Just like messages we would use this to retrieve the user's friend list, latest blog entry, and activity feed, etc.</p>
+
+<p>Save the changes you made to member_profile.php. Your finished page should display like:
+Advertisement
+What Happens When We Logoff?</p>
+
+<p>Because we want the profile pages to be public, it should still display. Minus the user widget of course.</p>
+
+<p>When logged in, and we go to profile without a third uri segment we see our own profile. Logded off, we will be shown the error below.</p>
+
+<p>We should not be able to view the message or dashboard. When we check the messages page we are greeted with this:
+We're Done</p>
+
+<p>That's it! We have added more depth to our initial example and demonstrated the different ways to use HMVC.</p>
+
+<pre><code>Call modules::run() from a controller.
+Echo modules::run() from a view to display a HTML snippet.
+Load a model from another module.
+</code></pre>
+
+<p>I hope this has been an enlightening experience. HMVC is an extraordinary pattern which makes applications more robust. It is well worth the investment. Give it a try. I promise you won't ever want to go back to vanilla MVC!</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/JamiiTech/stackfoward.github.io/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/JamiiTech/stackfoward.github.io/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/JamiiTech/stackfoward.github.io"></a> is maintained by <a href="https://github.com/JamiiTech">JamiiTech</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("W");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
